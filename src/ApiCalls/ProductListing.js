@@ -16,7 +16,7 @@ const ProductListing = () => {
         const data = await res.json();
         setProducts(data.products.slice(0, 9));
         console.log("hhhhhhhhhh", products.length);
-      }
+      } 
     } catch (error) {
       console.error("Error fetching products:", error);
     }
