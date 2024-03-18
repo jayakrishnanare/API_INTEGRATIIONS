@@ -77,26 +77,8 @@ const ProductListing = () => {
       message.error("Failed to add product. Please try again later.");
     }
   };
-  const updateProduct = async (productId, updatedValues) => {
-    try {
-      const response = await fetch(`https://dummyjson.com/products/${productId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedValues),
-      });
-      if (response.ok) {
-        const updatedProduct = await response.json();
-        setProducts(products.map((product) => (product.id === productId ? { ...product, ...updatedProduct } : product)));
-        message.success("Product updated successfully!");
-        setIsModalVisible(false);
-      } else {
-        message.error("Failed to update product. Please try again later.");
-      }
-    } catch (error) {
-      console.error("Error updating product:", error);
-      message.error("Failed to update product. Please try again later.");
-    }
-  };
+  
+  
   const handleCancelAddModal = () => {
     setIsAddModalVisible(false);
   };
@@ -108,12 +90,6 @@ const ProductListing = () => {
     getProductsList();
   }, []);
 
-
-  const handleEdit = (product) => {
-    setSelectedProduct(product);
-    form.setFieldsValue(product); // Prefill form fields with selected product data
-    setIsModalVisible(true);
-  };
   return (
     <React.Fragment>
       <div className="product_list">
@@ -150,7 +126,9 @@ const ProductListing = () => {
                   <button onClick={() => getProductsById(product.id)}>
                     view details
                   </button>
-                  <button onClick={() => handleEdit(product)}>Edit</button>
+                  <button id="edit_btn" type="primary">
+                    Edit
+                  </button>
                   <button onClick={() => deleteProduct(product.id)}>
                     delete
                   </button>
@@ -247,59 +225,6 @@ const ProductListing = () => {
           </Form.Item>
           <Button type="primary" htmlType="submit">
             Add
-          </Button>
-        </Form>
-      </Modal>
-      <Modal
-        title="Edit Product"
-        visible={isModalVisible}
-        onCancel={handleCancel}
-        footer={null}
-      >
-        <Form
-          form={form}
-          onFinish={(values) => updateProduct(selectedProduct.id, values)}
-        >
-          <Form.Item name="id" hidden>
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Title"
-            name="title"
-            rules={[{ required: true, message: "Please enter title" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Brand"
-            name="brand"
-            rules={[{ required: true, message: "Please enter brand" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Price"
-            name="price"
-            rules={[{ required: true, message: "Please enter price" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Rating"
-            name="rating"
-            rules={[{ required: true, message: "Please enter rating" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Category"
-            name="category"
-            rules={[{ required: true, message: "Please enter category" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Button type="primary" htmlType="submit">
-            Update
           </Button>
         </Form>
       </Modal>
